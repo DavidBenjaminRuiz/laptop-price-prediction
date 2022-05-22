@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body style="height: 100%; width: 100%; display:flex; align-items: center; justify-content: center; overflow-y: scroll; padding: 5vh; background-color: line; background-image: linear-gradient(to right top, #051937, #004d7a, #008793, #00bf72, #a8eb12);">
+    <form style="width: 35%;" id="formData">
+        <div class="form-group">
+            <label for="company">Company</label>
+            <input type="text" class="form-control" id="company" placeholder="Enter Company" value="Apple">
+        </div>
+        <div class="form-group">
+            <label for="company">Product</label>
+            <input type="text" class="form-control" id="product" placeholder="Enter Product" value="Macbook Pro">
+        </div>
+        <div class="form-group">
+            <label for="company">TypeName</label>
+            <input type="text" class="form-control" id="typeName" placeholder="Enter TypeName" value="Ultrabook">
+        </div>
+        <div class="form-group">
+            <label for="company">Inches</label>
+            <input type="text" class="form-control" id="inches" placeholder="Enter Inches" value="13.3">
+        </div>
+        <div class="form-group">
+            <label for="company">Screen Resolution</label>
+            <input type="text" class="form-control" id="screenResolution" placeholder="Enter ScreenResolution" value="IPS Panel Retina Display 2560x1600">
+        </div>
+        <div class="form-group">
+            <label for="company">Cpu</label>
+            <input type="text" class="form-control" id="cpu" placeholder="Enter Cpu" value="Intel Core i5 2.3GHz">
+        </div>
+        <div class="form-group">
+            <label for="company">Ram</label>
+            <input type="text" class="form-control" id="ram" placeholder="Enter Ram" value="8GB">
+        </div>
+        <div class="form-group">
+            <label for="company">Memory</label>
+            <input type="text" class="form-control" id="memory" placeholder="Enter Memory" value="128GB SSD">
+        </div>
+        <div class="form-group">
+            <label for="company">Gpu</label>
+            <input type="text" class="form-control" id="gpu" placeholder="Enter Gpu" value="Intel Iris Plus Graphics 640">
+        </div>
+        <div class="form-group">
+            <label for="company">OpSys</label>
+            <input type="text" class="form-control" id="opSys" placeholder="Enter OpSys" value="macOS">
+        </div>
+        <div class="form-group">
+            <label for="company">Weight</label>
+            <input type="text" class="form-control" id="weight" placeholder="Enter Weight" value="1.37kg">
+        </div>
+        <button type="submit" class="btn btn-primary" id="btnSubmit">Submit</button>
+        <div class="form-group">
+            <label for="prediction">Prediction (price):</label>        
+            <input type="text" class="form-control" id="prediction" disabled>
+        </div>
+    </form>
+
+    <!--Modal con el resultado-->
+    <form style="width: 35%; display:none;" id="formPrediction">
+
+        <button type="submit" class="btn btn-primary" id="btnAgain">Again</button>
+    </form>
+    
+</body>
+<script>
+    document.getElementById("btnSubmit").addEventListener("click", predict);
+    //document.getElementById("btnAgain").addEventListener("click", mostrar);
+
+    function mostrar(){
+        document.getElementById("formData").style.display = "block";
+        document.getElementById("formPrediction").style.display = "none";
+    }
+
+    function predict(e){
+        e.preventDefault()
+        console.log("Function submit")
+        let data = {};
+        data.data = document.getElementById("company").value + ",";
+        data.data += document.getElementById("product").value + ",";
+        data.data += document.getElementById("typeName").value + ",";
+        data.data += document.getElementById("inches").value + ",";
+        data.data += document.getElementById("screenResolution").value + ",";
+        data.data += document.getElementById("cpu").value + ",";
+        data.data += document.getElementById("ram").value + ",";
+        data.data += document.getElementById("memory").value + ",";
+        data.data += document.getElementById("gpu").value + ",";
+        data.data += document.getElementById("opSys").value + ",";
+        data.data += document.getElementById("weight").value;
+        console.log(data);
+
+        fetch('http://localhost:5000/make-prediction', {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers:{
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        ).then( res => res.json()
+        ).then(res =>{
+            let predict = document.getElementById('prediction');
+            predict.value = res.prediction;
+        }) 
+
+
+    }
+</script>
+</html>
