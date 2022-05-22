@@ -3,11 +3,12 @@ require('dotenv').config();
 const port = process.env.PORT || 8000;
 const express = require('express');
 const path = require('path');
-
+const serveStatic = require('serve-static');
 const {makePrediction} = require('./src/controllers/predictionCtrl');
 
 app = express();
 
+app.use('/', serveStatic(path.join(__dirname, '/dist')));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 
