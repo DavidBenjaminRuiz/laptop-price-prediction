@@ -94,7 +94,7 @@
         data.data += document.getElementById("weight").value;
         console.log(data);
 
-        fetch('https://laptop-price-prediction-1.herokuapp.com//make-prediction', {
+        fetch('https://laptop-price-prediction-1.herokuapp.com/make-prediction', {
             method: "POST",
             body: JSON.stringify(data),
             headers:{
